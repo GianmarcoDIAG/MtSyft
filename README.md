@@ -1,19 +1,19 @@
-# CSyft
+# MtSyft
 
 ## 0. Directory Structure
 
 The following is the directory structure of the project:
 
 * main folder. `zip` files contains benchmarks and examples. `sh` files provides instructions to execute the experiments.
-    * `src`. Contains the source code of the project. The three algoritms  are implemented by classes:
-        * EnvironmentsChainBestEffortSynthesizer. Standard algorithm;
-        * CommonCoreChainSynthesizer. Algorithm for chains with a common base;
-        * RefiningEnvironmentsChainSynthesizer. Algorithm for chains of refining environments.
-    * `EmpiricalResults`. Contains the experimental results, divided per benchmark, presented in the paper. `csv` files contain the results (`res_csyft_1.csv` stores runtimes of CSyft; `res_csyft_2.csv` stores runtimes of common-base-CSyft; `res_cysft_3.csv` stores runtimes of refining-CSyft. `times_csyft_{i}.csv` store the relative time cost of the major operations, i.e., LTLf2DFA, DFA2Symbolic, Adv Games, Coop Games, of each implementation). `py` files provide script to plot the results shown in the paper
+    * `src`. Contains the source code of the project. The three algoritms are implemented by three files:
+        * EnvironmentsChainBestEffortSynthesizer.cpp. Implements Algorithm 2;
+        * CommonCoreChainSynthesizer.cpp. Implements Algorithm 2 for multi-tier environments with a common base;
+        * RefiningEnvironmentsChainSynthesizer. Implements Algorithm 2 for multi-tier environments with conjunctive refinements.
+    * `EmpiricalResults`. Contains the experimental results, divided per benchmark, presented in the paper. `csv` files contain the experiments' results (`res_{implementation_name}.csv` stores the running time of `{implementation_name}`, where `{implementation_name} = {mtsyft, cb_mtsyft, conj_mtsyft}`;  `times_{implementation_name}.csv` stores the relative time cost of the major operations, i.e., LTLf2DFA, DFA2Symbolic, Adv Games, Coop Games, of `{implementation_name}`); `py` files plot the results shown in the paper
 
 ## 1. Build from Source
 
-Compilation instruction using CMake (https://cmake.org/). We recommend using of Ubuntu 20.04 LTS. Problems can occur between some libraries on which CSyft relies and newer versions of Ubuntu (more information below).
+Compilation instruction using CMake (https://cmake.org/). We recommend using of Ubuntu 20.04 LTS. Problems can occur between some libraries on which MtSyft relies and newer versions of Ubuntu (more information below).
 
 ### Install the dependencies
 
@@ -68,11 +68,11 @@ sudo cp -Pr include/* /usr/local/include
 
 #### SPOT
 
-CSyft relies on SPOT (https://spot.lre.epita.fr/). To install it, follows the instructions at https://spot.lre.epita.fr/install.html
+The project relies on SPOT (https://spot.lre.epita.fr/). To install it, follows the instructions at https://spot.lre.epita.fr/install.html
 
 #### Graphviz
 
-CSyft uses Graphviz to display automata and strategies. Follow the install instructions on the official website: https://graphviz.gitlab.io/download/.
+The project uses Graphviz to display automata and strategies. Follow the install instructions on the official website: https://graphviz.gitlab.io/download/.
 
 On Ubuntu, this should work:
 
@@ -91,10 +91,10 @@ sudo apt-get install libboost-dev
 If you get an error with missing Boost libraries you can use:
 
 ```
-sudo apt-get install libboost-dev-all
+sudo apt-get install libboost-all-dev
 ```
 
-For further information see https://www.boost.org/ 
+For further information see https://www.boost.org/ . Then, install Syft using:
 
 ```bash 
 git clone https://github.com/whitemech/Syft.git
@@ -140,14 +140,14 @@ make
 ```
 
 Building generates three executables:
-*`CSyft-Alg1`. Implements the standard LTLf best-effort synthesis under chains of environment specifications;
-*`CSyft-Alg2`. Implements the LTLf best-effort synthesis under chains of environment specifications with a common base;
-*`CSyft-Alg3`. Implements the LTLf best-effort synthesis under chains of refining environment specifications.
+*`MtSyft`. Implements LTLf best-effort synthesis in multi-tier environments (i.e., Algorithm 2);
+*`cb-MtSyft`. Implements LTLf best-effort synthesis in multi-tier environments with a common base;
+*`conj-MtSyft`. Implements LTLf best-effort synthesis in multi-tier environments with conjunctive refinements.
 
 For details about the usage of each implementation insert, e.g., the command:
 
 ```
-./CSyft-Alg1 --help
+./MtSyft --help
 ```
 
 ## 2. Performing the experiments.
@@ -166,7 +166,7 @@ sudo chmod "u+x" run-navigation.sh
 ./run-navigation.sh
 ```
 
-The results of the experiments will be stored into files inside the folder of the benchmarks. The running times are stored in files `res_csyft_{i}.csv` (i = {1, 2, 3}). The time cost of each major operation is stored in `times_cysft_{i}.csv` (i = {1, 2, 3})
+The results of the experiments will be stored into `csv` files inside the folder of the benchmarks. The running times are stored in files `res_{implementation_name}.csv`, where `{implementation_name} = {mtsyft, cb_mtsyft, conj_mtsyft}`; the time cost of each major operation is stored in `times_{implementation_name}.csv`.
 
 To execute the synthesized program on a 2x2 robot navigation benchmark run (interactive mode): 
 
