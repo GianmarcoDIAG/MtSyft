@@ -1,6 +1,40 @@
 # MtSyft
 
-## 1. Build from Source
+## Usage
+
+The following is the output of `./mtsyft --help`
+
+```
+MtSyft: A tool for LTLf best-effort synthesis in multi-tier environments
+Usage: ./MtSyft [OPTIONS]
+
+Options:
+  -h,--help                   Print this help message and exit
+  -a,--agent-file TEXT:FILE REQUIRED
+                              File to agent specification
+  -e,--environment-file TEXT:FILE REQUIRED
+                              File to environment tiers E_1, ..., E_n (E_1 most determined, E_n least determined)
+  -p,--partition-file TEXT:FILE REQUIRED
+                              File to partition
+  -s,--starting-player INT REQUIRED
+                              Starting player (agent=1, environment=0)
+  -t,--store-results          Specifies results should be stored in results.csv
+  -i,--interactive            Executes the synthesized program in interactive mode
+```
+
+LTLf formulas in agent and environment files should be written in Lydia's syntax. For further details, refer to https://github.com/whitemech/lydia .
+
+To perform best-effort synthesis for an LTLf goal in some LTLf multi-tiered environment, you have to provide both the path to the agent goal and the multi-tiered specification, e.g., `navigation_agent.ltlf` and `navigation_multitier.ltlf`, and the path to the partition file, e.g., `navigation.part` (see the `RobotNavigation` folder).
+
+For instance, the command:
+
+```
+./MtSyft -a navigation_agent.ltlf -e navigation_multitier.ltlf -p navigation.part -s 1 -i 1
+```
+
+Performs best-effort synthesis in multi-tiered environments with the agent moving first and executes the synthesized strategy in interactive mode.
+
+## Build from Source
 
 Compilation instruction using CMake (https://cmake.org/). We recommend using of Ubuntu 20.04 LTS. Problems can occur between some libraries on which MtSyft relies and newer versions of Ubuntu (more information below).
 
@@ -95,7 +129,7 @@ make -j
 sudo make install
 ```
 
-### 2. Build from source
+### Build from source
 
 ### Lydia
 
@@ -129,7 +163,7 @@ For details about the usage of each implementation insert, e.g., the command:
 ./MtSyft --help
 ```
 
-## 2. Performing the experiments.
+## Performing the experiments.
 
 Unzip the `zip` files. For performing the experiments on the counter game benchmarks run:
 
@@ -161,3 +195,19 @@ To plot the results of the experiments shown in the paper move into the `Empiric
 To plot the results of your experiments, move into the benchmarks folder and insert the same commands as above.
 
 Please note: performing experiments on counter game benchmarks may require weeks; performing experiments on robot navigation benchmarks may require a day or two.
+
+## Reference
+
+```
+@inproceedings{AminofDPR24,
+  author       = {Benjamin Aminof and
+                  Giuseppe {De Giacomo} and
+                  Gianmarco Parretti and
+                  Sasha Rubin},
+  title        = {Effective Approach to LTLf Best-Effort Synthesis in Multi-Tier Environments},
+  booktitle    = {{IJCAI}},
+  pages        = {3232--3240},
+  publisher    = {ijcai.org},
+  year         = {2024}
+}
+```
