@@ -2,7 +2,7 @@
 
 ## Usage
 
-The following is the output of `./mtsyft --help`
+The following is the output of `./MtSyft --help`
 
 ```
 MtSyft: A tool for LTLf best-effort synthesis in multi-tier environments
